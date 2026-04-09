@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EduPortal — The premier educational platform for students and mentors. Sign up or login to access courses, track progress, and grow.">
+    <title>EduPortal | Sign Up — Learn. Grow. Lead.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-canvas" aria-hidden="true">
+        <div class="gradient-blob blob-1"></div>
+        <div class="gradient-blob blob-2"></div>
+        <div class="gradient-blob blob-3"></div>
+        <div class="gradient-blob blob-4"></div>
+        <canvas id="particle-canvas"></canvas>
+    </div>
+
+    <!-- Main Container -->
+    <main class="login-container" role="main">
+        <!-- Logo & Tagline -->
+        <header class="brand-header">
+            <div class="logo-mark" aria-label="EduPortal Logo">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="logo-grad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                            <stop offset="0%" stop-color="#6dddff"/>
+                            <stop offset="100%" stop-color="#ac8aff"/>
+                        </linearGradient>
+                    </defs>
+                    <circle cx="24" cy="24" r="22" stroke="url(#logo-grad)" stroke-width="2.5" fill="none"/>
+                    <path d="M14 30L24 16L34 30" stroke="url(#logo-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <path d="M19 26L24 18L29 26" stroke="url(#logo-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.5"/>
+                    <circle cx="24" cy="34" r="2" fill="url(#logo-grad)" opacity="0.7"/>
+                </svg>
+            </div>
+            <h1 class="brand-name">EduPortal</h1>
+            <p class="brand-tagline">Learn. Grow. Lead.</p>
+        </header>
+
+        <!-- Auth Card -->
+        <div class="glass-card" id="login-card">
+            <!-- Tab Switcher: Student / Mentor -->
+            <div class="tab-switcher" role="tablist" aria-label="Portal type selector">
+                <div class="tab-slider" id="tab-slider"></div>
+                <button class="tab-btn active" id="tab-student" role="tab" aria-selected="true" data-portal="student">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c0 2 4 3 6 3s6-1 6-3v-5"/>
+                    </svg>
+                    Student
+                </button>
+                <button class="tab-btn" id="tab-mentor" role="tab" aria-selected="false" data-portal="mentor">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    Mentor
+                </button>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- STUDENT PANEL                                  -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="panels-wrapper">
+                <div class="panel active" id="panel-student" role="tabpanel" aria-labelledby="tab-student">
+
+                    <!-- ── STUDENT SIGN UP (shown first) ── -->
+                    <div class="auth-view active" id="student-signup-view" data-view="signup">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Join as a <span class="accent-student">Learner</span></h2>
+                            <p class="panel-subtitle">Start your journey to greatness</p>
+                        </div>
+
+                        <form class="login-form" id="form-student-signup" novalidate>
+                            <div class="input-group" data-portal="student">
+                                <input type="text" id="student-signup-name" class="input-field" placeholder=" " autocomplete="name" required aria-label="Full name">
+                                <label for="student-signup-name" class="floating-label">Full Name</label>
+                                <div class="input-glow"></div>
+                            </div>
+                            <div class="input-group" data-portal="student">
+                                <input type="email" id="student-signup-email" class="input-field" placeholder=" " autocomplete="email" required aria-label="Email address">
+                                <label for="student-signup-email" class="floating-label">Email Address</label>
+                                <div class="input-glow"></div>
+                            </div>
+                            <div class="input-group" data-portal="student">
+                                <input type="password" id="student-signup-password" class="input-field" placeholder=" " autocomplete="new-password" required aria-label="Create password">
+                                <label for="student-signup-password" class="floating-label">Create Password</label>
+                                <button type="button" class="toggle-password" aria-label="Toggle password visibility" data-target="student-signup-password">
+                                    <svg class="eye-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    <svg class="eye-closed hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                </button>
+                                <div class="input-glow"></div>
+                            </div>
+                            <div class="input-group" data-portal="student">
+                                <input type="password" id="student-signup-confirm" class="input-field" placeholder=" " autocomplete="new-password" required aria-label="Confirm password">
+                                <label for="student-signup-confirm" class="floating-label">Confirm Password</label>
+                                <div class="input-glow"></div>
+                            </div>
+
+                            <button type="submit" class="login-btn student-btn" id="student-signup-btn">
+                                <span class="btn-text">Create Account</span>
+                                <span class="btn-loader hidden" aria-hidden="true"><span class="spinner"></span></span>
+                                <div class="btn-ripple"></div>
+                            </button>
+                        </form>
+
+                        <div class="divider" aria-hidden="true">
+                            <span class="divider-line"></span>
+                            <span class="divider-text">or sign up with</span>
+                            <span class="divider-line"></span>
+                        </div>
+
+                        <button class="google-btn" id="student-google-signup" type="button" aria-label="Sign up with Google">
+                            <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+                            <span>Sign up with Google</span>
+                        </button>
+
+                        <p class="signup-link">
+                            Already have an account? <a href="#" class="auth-toggle-link" data-portal="student" data-target="login">Login</a>
+                        </p>
+                    </div>
+
+                    <!-- ── STUDENT LOGIN ── -->
+                    <div class="auth-view" id="student-login-view" data-view="login">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Welcome Back, <span class="accent-student">Learner</span></h2>
+                            <p class="panel-subtitle">Continue your journey to greatness</p>
+                        </div>
+
+                        <form class="login-form" id="form-student-login" novalidate>
+                            <div class="input-group" data-portal="student">
+                                <input type="email" id="student-login-email" class="input-field" placeholder=" " autocomplete="email" required aria-label="Student email address">
+                                <label for="student-login-email" class="floating-label">Email Address</label>
+                                <div class="input-glow"></div>
+                            </div>
+                            <div class="input-group" data-portal="student">
+                                <input type="password" id="student-login-password" class="input-field" placeholder=" " autocomplete="current-password" required aria-label="Student password">
+                                <label for="student-login-password" class="floating-label">Password</label>
+                                <button type="button" class="toggle-password" aria-label="Toggle password visibility" data-target="student-login-password">
+                                    <svg class="eye-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    <svg class="eye-closed hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                </button>
+                                <div class="input-glow"></div>
+                            </div>
+                            <div class="form-meta">
+                                <a href="#" class="forgot-link" id="student-forgot">Forgot Password?</a>
+                            </div>
+
+                            <button type="submit" class="login-btn student-btn" id="student-login-btn">
+                                <span class="btn-text">Login</span>
+                                <span class="btn-loader hidden" aria-hidden="true"><span class="spinner"></span></span>
+                                <div class="btn-ripple"></div>
+                            </button>
+                        </form>
+
+                        <div class="divider" aria-hidden="true">
+                            <span class="divider-line"></span>
+                            <span class="divider-text">or continue with</span>
+                            <span class="divider-line"></span>
+                        </div>
+
+                        <button class="google-btn" id="student-google-login" type="button" aria-label="Sign in with Google">
+                            <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+                            <span>Sign in with Google</span>
+                        </button>
+
+                        <p class="signup-link">
+                            New here? <a href="#" class="auth-toggle-link" data-portal="student" data-target="signup">Create a Student Account</a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════ -->
+                <!-- MENTOR PANEL                                   -->
+                <!-- ═══════════════════════════════════════════════ -->
+                <div class="panel" id="panel-mentor" role="tabpanel" aria-labelledby="tab-mentor" hidden>
+
+                    <!-- ── MENTOR SIGN UP (shown first) ── -->
+                    <div class="auth-view active" id="mentor-signup-view" data-view="signup">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Become a <span class="accent-mentor">Mentor</span></h2>
+                            <p class="panel-subtitle">Guide the next generation of leaders</p>
+                        </div>
+
+                        <form class="login-form" id="form-mentor-signup" novalidate>
+                            <div class="input-group" data-portal="mentor">
+                                <input type="text" id="mentor-signup-name" class="input-field" placeholder=" " autocomplete="name" required aria-label="Full name">
+                                <label for="mentor-signup-name" class="floating-label">Full Name</label>
+                                <div class="input-glow"></div>
+                            </div>
+                            <div class="input-group" data-portal="mentor">
+                                <input type="email" id="mentor-signup-email" class="input-field" placeholder=" " autocomplete="email" required aria-label="Email address">
+                                <label for="mentor-signup-email" class="floating-label">Email Address</label>
+                                <div class="input-glow"></div>
+                            </div>
+                            <div class="input-group" data-portal="mentor">
+                                <input type="text" id="mentor-signup-expertise" class="input-field" placeholder=" " required aria-label="Area of expertise">
+                                <label for="mentor-signup-expertise" class="floating-label">Area of Expertise</label>
+                                <div class="input-glow"></div>
+                            </div>
+                            <div class="input-group" data-portal="mentor">
+                                <input type="password" id="mentor-signup-password" class="input-field" placeholder=" " autocomplete="new-password" required aria-label="Create password">
+                                <label for="mentor-signup-password" class="floating-label">Create Password</label>
+                                <button type="button" class="toggle-password" aria-label="Toggle password visibility" data-target="mentor-signup-password">
+                                    <svg class="eye-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    <svg class="eye-closed hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                </button>
+                                <div class="input-glow"></div>
+                            </div>
+                            <div class="input-group" data-portal="mentor">
+                                <input type="password" id="mentor-signup-confirm" class="input-field" placeholder=" " autocomplete="new-password" required aria-label="Confirm password">
+                                <label for="mentor-signup-confirm" class="floating-label">Confirm Password</label>
+                                <div class="input-glow"></div>
+                            </div>
+
+                            <button type="submit" class="login-btn mentor-btn" id="mentor-signup-btn">
+                                <span class="btn-text">Create Account</span>
+                                <span class="btn-loader hidden" aria-hidden="true"><span class="spinner"></span></span>
+                                <div class="btn-ripple"></div>
+                            </button>
+                        </form>
+
+                        <div class="divider" aria-hidden="true">
+                            <span class="divider-line"></span>
+                            <span class="divider-text">or sign up with</span>
+                            <span class="divider-line"></span>
+                        </div>
+
+                        <button class="google-btn" id="mentor-google-signup" type="button" aria-label="Sign up with Google">
+                            <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+                            <span>Sign up with Google</span>
+                        </button>
+
+                        <p class="signup-link">
+                            Already have an account? <a href="#" class="auth-toggle-link" data-portal="mentor" data-target="login">Login</a>
+                        </p>
+                    </div>
+
+                    <!-- ── MENTOR LOGIN ── -->
+                    <div class="auth-view" id="mentor-login-view" data-view="login">
+                        <div class="panel-header">
+                            <h2 class="panel-title">Welcome Back, <span class="accent-mentor">Mentor</span></h2>
+                            <p class="panel-subtitle">Continue guiding the next generation</p>
+                        </div>
+
+                        <form class="login-form" id="form-mentor-login" novalidate>
+                            <div class="input-group" data-portal="mentor">
+                                <input type="email" id="mentor-login-email" class="input-field" placeholder=" " autocomplete="email" required aria-label="Mentor email address">
+                                <label for="mentor-login-email" class="floating-label">Email Address</label>
+                                <div class="input-glow"></div>
+                            </div>
+                            <div class="input-group" data-portal="mentor">
+                                <input type="password" id="mentor-login-password" class="input-field" placeholder=" " autocomplete="current-password" required aria-label="Mentor password">
+                                <label for="mentor-login-password" class="floating-label">Password</label>
+                                <button type="button" class="toggle-password" aria-label="Toggle password visibility" data-target="mentor-login-password">
+                                    <svg class="eye-open" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    <svg class="eye-closed hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                </button>
+                                <div class="input-glow"></div>
+                            </div>
+                            <div class="form-meta">
+                                <a href="#" class="forgot-link" id="mentor-forgot">Forgot Password?</a>
+                            </div>
+
+                            <button type="submit" class="login-btn mentor-btn" id="mentor-login-btn">
+                                <span class="btn-text">Login</span>
+                                <span class="btn-loader hidden" aria-hidden="true"><span class="spinner"></span></span>
+                                <div class="btn-ripple"></div>
+                            </button>
+                        </form>
+
+                        <div class="divider" aria-hidden="true">
+                            <span class="divider-line"></span>
+                            <span class="divider-text">or continue with</span>
+                            <span class="divider-line"></span>
+                        </div>
+
+                        <button class="google-btn" id="mentor-google-login" type="button" aria-label="Sign in with Google">
+                            <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+                            <span>Sign in with Google</span>
+                        </button>
+
+                        <p class="signup-link">
+                            New here? <a href="#" class="auth-toggle-link" data-portal="mentor" data-target="signup">Apply as a Mentor</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="login-footer">
+            <p>&copy; 2026 EduPortal. All rights reserved.</p>
+        </footer>
+    <!-- ── Google Auth Simulator Modal ── -->
+    <div class="google-modal-overlay hidden" id="google-auth-modal">
+        <div class="google-modal-content">
+            <div class="google-modal-header">
+                <svg width="24" height="24" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+                <h3>Sign in with Google</h3>
+                <p>Choose an account to continue to EduPortal</p>
+            </div>
+            
+            <div class="google-account-list">
+                <div class="google-account-item" data-email="student.demo@gmail.com" data-name="Demo Student" data-avatar="https://i.pravatar.cc/100?img=52">
+                    <img src="https://i.pravatar.cc/100?img=52" alt="Avatar" class="g-avatar">
+                    <div class="g-info">
+                        <span class="g-name">Demo Student</span>
+                        <span class="g-email">student.demo@gmail.com</span>
+                    </div>
+                </div>
+                <div class="google-account-item" data-email="mentor.demo@gmail.com" data-name="Demo Mentor" data-avatar="https://i.pravatar.cc/100?img=47">
+                    <img src="https://i.pravatar.cc/100?img=47" alt="Avatar" class="g-avatar">
+                    <div class="g-info">
+                        <span class="g-name">Demo Mentor</span>
+                        <span class="g-email">mentor.demo@gmail.com</span>
+                    </div>
+                </div>
+                <div class="google-account-item add-account-item" id="add-google-account-btn">
+                    <div class="g-avatar-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
+                    <span class="g-name">Use another account</span>
+                </div>
+            </div>
+
+            <!-- Custom Account Form (Hidden by default) -->
+            <form id="google-custom-account-form" class="hidden" style="display: flex; flex-direction: column; gap: 1rem;">
+                <p style="font-size: 0.875rem; color: var(--on-surface-variant); text-align: center; margin-bottom: 0.5rem;">Sign in to continue to EduPortal</p>
+                <div class="input-group" style="margin-bottom: 0;">
+                    <input type="text" id="g-custom-name" class="input-field" placeholder=" " required>
+                    <label for="g-custom-name" class="floating-label">Full Name</label>
+                    <div class="input-glow"></div>
+                </div>
+                <div class="input-group" style="margin-bottom: 0;">
+                    <input type="email" id="g-custom-email" class="input-field" placeholder=" " required>
+                    <label for="g-custom-email" class="floating-label">Email or phone</label>
+                    <div class="input-glow"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                    <button type="button" id="g-custom-back" style="background: none; border: none; color: var(--on-surface); cursor: pointer; font-weight: 500;">Back</button>
+                    <button type="submit" class="btn-primary" style="padding: 0.5rem 1.5rem; font-size: 0.875rem;">Next</button>
+                </div>
+            </form>
+
+            <button class="google-modal-close" id="google-modal-close" aria-label="Close modal">×</button>
+        </div>
+    </div>
+
+    <script type="module" src="src/data/db.js"></script>
+    <script type="module" src="src/data/seed.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

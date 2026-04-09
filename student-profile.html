@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EduPortal — Create your Student Profile. Set up your learning track, goals, and connect with expert mentors.">
+    <title>EduPortal | Student Profile Setup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="student-profile.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-canvas" aria-hidden="true">
+        <div class="gradient-blob blob-1"></div>
+        <div class="gradient-blob blob-2"></div>
+        <div class="gradient-blob blob-3"></div>
+        <div class="gradient-blob blob-4"></div>
+        <canvas id="particle-canvas"></canvas>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast" role="alert" aria-live="polite">
+        <div class="toast-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="toast-content">
+            <p class="toast-title" id="toast-title">Saved!</p>
+            <p class="toast-msg" id="toast-msg">Changes saved.</p>
+        </div>
+        <button class="toast-close" id="toast-close" aria-label="Close notification">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+
+    <!-- Confetti Canvas (Step 3 success) -->
+    <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+    <!-- Page Wrapper -->
+    <main class="profile-container" role="main">
+
+        <!-- Header -->
+        <header class="profile-header">
+            <a href="index.html" class="back-link" aria-label="Back to EduPortal">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                Back
+            </a>
+            <div class="profile-brand">
+                <div class="logo-mark" aria-label="EduPortal Logo">
+                    <svg width="36" height="36" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="logo-grad-s" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#6dddff"/>
+                                <stop offset="100%" stop-color="#ac8aff"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="24" cy="24" r="22" stroke="url(#logo-grad-s)" stroke-width="2.5" fill="none"/>
+                        <path d="M14 30L24 16L34 30" stroke="url(#logo-grad-s)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        <path d="M19 26L24 18L29 26" stroke="url(#logo-grad-s)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.5"/>
+                        <circle cx="24" cy="34" r="2" fill="url(#logo-grad-s)" opacity="0.7"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="profile-brand-name">EduPortal</h1>
+                    <p class="profile-brand-sub">Student Profile Setup</p>
+                </div>
+            </div>
+            <!-- Step Indicator -->
+            <div class="step-indicator" id="step-indicator" aria-label="Progress steps">
+                <div class="step active" id="step-dot-1">
+                    <div class="step-circle">1</div>
+                    <span class="step-label">Basic Info</span>
+                </div>
+                <div class="step-line" id="step-line-1"></div>
+                <div class="step" id="step-dot-2">
+                    <div class="step-circle">2</div>
+                    <span class="step-label">Details</span>
+                </div>
+                <div class="step-line" id="step-line-2"></div>
+                <div class="step" id="step-dot-3">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Review</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Form -->
+        <form id="student-profile-form" novalidate>
+
+            <!-- ═══════════════════════════════════
+                 STEP 1: Basic Info
+            ════════════════════════════════════ -->
+            <section class="form-section active" id="section-basic" aria-labelledby="section-basic-title">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
+                    <div>
+                        <h2 id="section-basic-title" class="section-title">Basic Information</h2>
+                        <p class="section-subtitle">Let's get to know you — start your learning journey here</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <!-- Profile Photo -->
+                    <div class="form-field full-width">
+                        <label class="field-label">Profile Photo <span class="optional-badge">Optional</span></label>
+                        <div class="photo-upload-area" id="photo-upload-area" role="button" tabindex="0" aria-label="Upload profile photo">
+                            <input type="file" id="profile-photo" accept="image/*" class="file-input-hidden" aria-label="Choose profile photo">
+                            <div class="photo-preview" id="photo-preview">
+                                <div class="photo-placeholder" id="photo-placeholder">
+                                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    <p>Upload Photo</p>
+                                    <span>PNG, JPG up to 5MB</span>
+                                </div>
+                                <img id="photo-img" class="hidden" alt="Profile preview">
+                                <div class="photo-overlay" id="photo-overlay">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                    Change Photo
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div class="form-field">
+                        <label class="field-label" for="full-name">Full Name</label>
+                        <div class="mp-input-wrap">
+                            <input type="text" id="full-name" class="mp-input" placeholder="Enter your full name" autocomplete="name" required>
+                        </div>
+                    </div>
+
+                    <!-- Age -->
+                    <div class="form-field">
+                        <label class="field-label" for="age">Age</label>
+                        <div class="mp-input-wrap">
+                            <input type="number" id="age" class="mp-input" placeholder="19" min="10" max="65" required>
+                        </div>
+                    </div>
+
+                    <!-- Contact Email -->
+                    <div class="form-field full-width">
+                        <label class="field-label" for="contact-email">
+                            Contact Email
+                            <span class="tooltip-wrap">
+                                <svg class="tooltip-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                <span class="tooltip-bubble">Your email is only shared with mentors you connect with.</span>
+                            </span>
+                        </label>
+                        <div class="mp-input-wrap has-icon" style="max-width:480px;">
+                            <span class="input-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            </span>
+                            <input type="email" id="contact-email" class="mp-input" placeholder="Enter your email" autocomplete="email" required>
+                        </div>
+                        <p class="field-hint hint-muted">Only visible to your mentors</p>
+                    </div>
+
+                    <!-- Track Selection -->
+                    <div class="form-field full-width">
+                        <label class="field-label">Track Selection</label>
+                        <p class="field-hint">Choose the path that matches your learning goals</p>
+                        <div class="radio-card-group" role="radiogroup" aria-label="Select learning track">
+                            <label class="radio-card" id="radio-technical-label" for="track-technical">
+                                <input type="radio" name="track-type" id="track-technical" value="technical">
+                                <div class="radio-card-icon">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                                </div>
+                                <div>
+                                    <p class="radio-card-title">Technical</p>
+                                    <p class="radio-card-desc">Coding, development, data science, DevOps</p>
+                                </div>
+                                <div class="radio-check"></div>
+                            </label>
+                            <label class="radio-card" id="radio-nontechnical-label" for="track-nontechnical">
+                                <input type="radio" name="track-type" id="track-nontechnical" value="nontechnical">
+                                <div class="radio-card-icon">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                                </div>
+                                <div>
+                                    <p class="radio-card-title">Non-Technical</p>
+                                    <p class="radio-card-desc">Music, dance, sports, arts, drama</p>
+                                </div>
+                                <div class="radio-check"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <div></div>
+                    <button type="button" class="mp-btn mp-btn-primary" id="next-to-step2">
+                        <span>Continue</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════
+                 STEP 2A: Technical Track
+            ════════════════════════════════════ -->
+            <section class="form-section" id="section-technical" aria-labelledby="section-tech-title">
+                <div class="section-header">
+                    <div class="section-icon tech-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    </div>
+                    <div>
+                        <h2 id="section-tech-title" class="section-title">Technical Track</h2>
+                        <p class="section-subtitle">Tell us about your goals in tech</p>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="subsection">
+                    <h3 class="subsection-title">Education</h3>
+                    <div class="form-field" style="max-width:420px;">
+                        <label class="field-label" for="tech-education">Currently pursuing or highest finished</label>
+                        <select id="tech-education" class="mp-select">
+                            <option value="" disabled selected>Select your education level</option>
+                            <option value="High School">High School</option>
+                            <option value="Undergraduate">Undergraduate</option>
+                            <option value="Postgraduate">Postgraduate</option>
+                            <option value="Self-taught">Self-taught</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Role / Goal -->
+                <div class="subsection">
+                    <h3 class="subsection-title">Role / Goal</h3>
+                    <div class="form-field" style="max-width:480px;">
+                        <label class="field-label" for="tech-role">What do you want to become?</label>
+                        <select id="tech-role" class="mp-select">
+                            <option value="" disabled selected>Select a role</option>
+                            <option value="Front-End Developer">Front-End Developer</option>
+                            <option value="Back-End Developer">Back-End Developer</option>
+                            <option value="Full-Stack Developer">Full-Stack Developer</option>
+                            <option value="Data Scientist">Data Scientist</option>
+                            <option value="UI/UX Designer">UI/UX Designer</option>
+                            <option value="DevOps Engineer">DevOps Engineer</option>
+                            <option value="Mobile Developer">Mobile Developer</option>
+                            <option value="Machine Learning Engineer">Machine Learning Engineer</option>
+                            <option value="Cloud Architect">Cloud Architect</option>
+                            <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+                            <option value="Game Developer">Game Developer</option>
+                            <option value="custom">None of these match — type your own</option>
+                        </select>
+                    </div>
+                    <div class="form-field hidden" id="custom-role-wrap" style="max-width:480px; margin-top:0.75rem;">
+                        <label class="field-label" for="custom-role">Your Custom Role</label>
+                        <div class="mp-input-wrap">
+                            <input type="text" id="custom-role" class="mp-input" placeholder="e.g. Blockchain Developer">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Already Learnt -->
+                <div class="subsection">
+                    <h3 class="subsection-title">Skills Already Learnt <span class="optional-badge">Optional</span></h3>
+                    <p class="field-hint mb-sm">Select the skills you already know (dynamically matched to your role)</p>
+                    <div class="tag-selector" id="tech-skills-selector" role="group" aria-label="Technology skills">
+                        <!-- Chips rendered dynamically by JS -->
+                    </div>
+                    <p class="field-hint mt-sm">Click to select · deselect</p>
+                </div>
+
+                <!-- About Yourself -->
+                <div class="subsection">
+                    <h3 class="subsection-title">About Yourself</h3>
+                    <div class="form-field full-width">
+                        <label class="field-label" for="tech-about">Describe yourself <span class="optional-badge">Max 500 chars</span></label>
+                        <textarea id="tech-about" class="mp-textarea" placeholder="Describe yourself — your goals, motivation, what you want to achieve..." rows="5" maxlength="500"></textarea>
+                        <div class="char-counter"><span id="tech-about-count">0</span> / 500</div>
+                    </div>
+                </div>
+
+                <!-- Achievements / Certifications -->
+                <div class="subsection">
+                    <h3 class="subsection-title">Achievements or Certifications <span class="optional-badge">Optional</span></h3>
+                    <div class="toggle-field">
+                        <label class="toggle-label" for="has-tech-achievements">Do you have any achievements or certifications?</label>
+                        <div class="toggle-switch-wrap">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="has-tech-achievements">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="toggle-status" id="tech-ach-status">No</span>
+                        </div>
+                    </div>
+                    <div class="conditional-block hidden" id="tech-achievements-container">
+                        <div id="tech-achievements-list">
+                            <!-- Achievement items injected by JS -->
+                        </div>
+                        <button type="button" class="add-more-btn" id="add-tech-achievement">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Another
+                        </button>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <button type="button" class="mp-btn mp-btn-ghost" id="back-to-step1-tech">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        Back
+                    </button>
+                    <button type="button" class="mp-btn mp-btn-primary" id="next-to-review-tech">
+                        <span>Review Profile</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════
+                 STEP 2B: Non-Technical Track
+            ════════════════════════════════════ -->
+            <section class="form-section" id="section-nontechnical" aria-labelledby="section-nontech-title">
+                <div class="section-header">
+                    <div class="section-icon nontech-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                    </div>
+                    <div>
+                        <h2 id="section-nontech-title" class="section-title">Non-Technical Track</h2>
+                        <p class="section-subtitle">Share your passion, dreams, and creative journey</p>
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="subsection">
+                    <h3 class="subsection-title">Education</h3>
+                    <div class="form-field" style="max-width:420px;">
+                        <label class="field-label" for="nontech-education">Currently pursuing or highest finished</label>
+                        <select id="nontech-education" class="mp-select">
+                            <option value="" disabled selected>Select your education level</option>
+                            <option value="High School">High School</option>
+                            <option value="Undergraduate">Undergraduate</option>
+                            <option value="Postgraduate">Postgraduate</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Dream or Hobby -->
+                <div class="subsection">
+                    <h3 class="subsection-title">Dream or Hobby</h3>
+                    <p class="field-hint mb-sm">Pick the area you're most passionate about</p>
+                    <div class="hobby-card-grid" role="radiogroup" aria-label="Select hobby">
+                        <label class="hobby-card" data-hobby="Music">
+                            <input type="radio" name="hobby" value="Music">
+                            <span class="hobby-emoji">🎵</span>
+                            <span class="hobby-name">Music</span>
+                        </label>
+                        <label class="hobby-card" data-hobby="Dance">
+                            <input type="radio" name="hobby" value="Dance">
+                            <span class="hobby-emoji">💃</span>
+                            <span class="hobby-name">Dance</span>
+                        </label>
+                        <label class="hobby-card" data-hobby="Sports">
+                            <input type="radio" name="hobby" value="Sports">
+                            <span class="hobby-emoji">⚽</span>
+                            <span class="hobby-name">Sports</span>
+                        </label>
+                        <label class="hobby-card" data-hobby="Art">
+                            <input type="radio" name="hobby" value="Art">
+                            <span class="hobby-emoji">🎨</span>
+                            <span class="hobby-name">Art</span>
+                        </label>
+                        <label class="hobby-card" data-hobby="Drama">
+                            <input type="radio" name="hobby" value="Drama">
+                            <span class="hobby-emoji">🎭</span>
+                            <span class="hobby-name">Drama</span>
+                        </label>
+                        <label class="hobby-card" data-hobby="Other">
+                            <input type="radio" name="hobby" value="Other">
+                            <span class="hobby-emoji">✨</span>
+                            <span class="hobby-name">Other</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Sub-branch Selection -->
+                <div class="subsection hidden" id="nontech-subbranch-section">
+                    <h3 class="subsection-title">Sub-branch / Specialization</h3>
+                    <p class="field-hint mb-sm">Select one or more specializations — or type your own</p>
+                    <div class="tag-selector" id="nontech-subbranch-selector" role="group" aria-label="Sub-branch skills">
+                        <!-- Chips rendered dynamically by JS -->
+                    </div>
+                    <div class="form-field mt-md" style="max-width:360px;">
+                        <label class="field-label" for="custom-subbranch">Type your own <span class="optional-badge">Optional</span></label>
+                        <div class="mp-input-wrap">
+                            <input type="text" id="custom-subbranch" class="mp-input" placeholder="e.g. Kuchipudi, Badminton">
+                        </div>
+                        <button type="button" class="add-chip-btn" id="add-custom-subbranch">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add
+                        </button>
+                    </div>
+                </div>
+
+                <!-- About Yourself -->
+                <div class="subsection">
+                    <h3 class="subsection-title">About Yourself</h3>
+                    <div class="form-field full-width">
+                        <label class="field-label" for="nontech-about">Tell us about your goals, plan, and passion <span class="optional-badge">Max 500 chars</span></label>
+                        <textarea id="nontech-about" class="mp-textarea" placeholder="Tell us about your goals, plan, and passion..." rows="5" maxlength="500"></textarea>
+                        <div class="char-counter"><span id="nontech-about-count">0</span> / 500</div>
+                    </div>
+                </div>
+
+                <!-- Achievements / Awards -->
+                <div class="subsection">
+                    <h3 class="subsection-title">Achievements or Awards <span class="optional-badge">Optional</span></h3>
+                    <div class="toggle-field">
+                        <label class="toggle-label" for="has-nontech-achievements">Any achievements, awards, or events participated in?</label>
+                        <div class="toggle-switch-wrap">
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="has-nontech-achievements">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="toggle-status" id="nontech-ach-status">No</span>
+                        </div>
+                    </div>
+                    <div class="conditional-block hidden" id="nontech-achievements-container">
+                        <div id="nontech-achievements-list">
+                            <!-- Achievement items injected by JS -->
+                        </div>
+                        <button type="button" class="add-more-btn nontech-add" id="add-nontech-achievement">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Another
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Talent Video -->
+                <div class="subsection">
+                    <h3 class="subsection-title">Talent Video <span class="optional-badge">Optional</span></h3>
+                    <p class="field-hint mb-sm">Upload a short video of your talent</p>
+                    <p class="field-hint hint-muted mb-md">Maximum 5 minutes. Helps mentors understand your current level.</p>
+
+                    <div class="video-upload-row">
+                        <div class="form-field" style="flex:1; min-width:0;">
+                            <label class="field-label" for="video-link">YouTube / Drive Link</label>
+                            <div class="mp-input-wrap has-icon">
+                                <span class="input-icon">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                </span>
+                                <input type="url" id="video-link" class="mp-input" placeholder="https://youtube.com/watch?v=...">
+                            </div>
+                        </div>
+                        <span class="or-divider">OR</span>
+                        <div class="form-field">
+                            <label class="field-label">Upload Video</label>
+                            <label class="file-upload-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                Choose File
+                                <input type="file" id="video-file" accept="video/*" class="file-input-hidden">
+                            </label>
+                            <p class="file-name-display" id="video-file-name">No file chosen</p>
+                        </div>
+                    </div>
+
+                    <!-- Video thumbnail preview -->
+                    <div class="video-preview-wrap hidden" id="video-preview-wrap">
+                        <div class="video-thumb" id="video-thumb">
+                            <img id="video-thumb-img" alt="Video thumbnail">
+                            <div class="play-overlay">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-nav">
+                    <button type="button" class="mp-btn mp-btn-ghost" id="back-to-step1-nontech">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        Back
+                    </button>
+                    <button type="button" class="mp-btn mp-btn-primary nontech-submit" id="next-to-review-nontech">
+                        <span>Review Profile</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════
+                 STEP 3: Review & Submit
+            ════════════════════════════════════ -->
+            <section class="form-section" id="section-review" aria-labelledby="section-review-title">
+                <div class="section-header review-header">
+                    <div class="section-icon review-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <div>
+                        <h2 id="section-review-title" class="section-title">Review Your Profile</h2>
+                        <p class="section-subtitle">Verify everything looks good before submitting</p>
+                    </div>
+                </div>
+
+                <div id="review-content">
+                    <!-- Review cards generated by JS -->
+                </div>
+
+                <div class="section-nav">
+                    <button type="button" class="mp-btn mp-btn-ghost" id="back-to-step2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        Back to Edit
+                    </button>
+                    <button type="submit" class="mp-btn mp-btn-primary mp-btn-large" id="submit-profile">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        Create My Profile
+                    </button>
+                </div>
+            </section>
+
+        </form>
+
+        <!-- ═══════════════════════════════════
+             SUCCESS SCREEN
+        ════════════════════════════════════ -->
+        <section class="success-screen hidden" id="success-screen" aria-labelledby="success-title">
+            <div class="success-card">
+                <div class="success-icon-wrap">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <h2 id="success-title" class="success-title">Your Profile is Live! 🎉</h2>
+                <p class="success-subtitle">Mentors can now discover you and help you grow.<br>Start exploring the dashboard to find your perfect match.</p>
+                <a href="student-dashboard.html" class="mp-btn mp-btn-primary mp-btn-large">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    Go to Dashboard
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="profile-footer">
+            <p>&copy; 2026 EduPortal. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <script type="module" src="src/data/db.js"></script>
+    <script type="module" src="src/data/seed.js"></script>
+    <script src="student-profile.js"></script>
+</body>
+</html>
