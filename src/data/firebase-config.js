@@ -1,12 +1,12 @@
-// Firebase Configuration Template
-// Replace 'YOUR_CONFIG_HERE' with the object from Project Settings -> Your Apps -> Web App
+// Final Firebase Configuration
 const firebaseConfig = {
-  apiKey: "YOUR_CONFIG_HERE",
-  authDomain: "YOUR_CONFIG_HERE",
-  projectId: "YOUR_CONFIG_HERE",
-  storageBucket: "YOUR_CONFIG_HERE",
-  messagingSenderId: "YOUR_CONFIG_HERE",
-  appId: "YOUR_CONFIG_HERE"
+  apiKey: "AIzaSyCCkApmqyatBiPH_RHiGlHlhLGjIpyNmT8",
+  authDomain: "eduportal-80ac3.firebaseapp.com",
+  projectId: "eduportal-80ac3",
+  storageBucket: "eduportal-80ac3.firebasestorage.app",
+  messagingSenderId: "1007566604521",
+  appId: "1:1007566604521:web:5888bb0c1517bc5df90878",
+  measurementId: "G-CDFWS9JVVK"
 };
 
 export default firebaseConfig;
