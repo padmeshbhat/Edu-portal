@@ -1,85 +1,67 @@
 /**
- * EduPortal Simulated DB
- * Uses localStorage to store "collections".
- * Uses window 'storage' event to simulate real-time listeners (onSnapshot).
+ * EduPortal Real-Time DB (Firebase Firestore)
+ * Replaces simulated localStorage logic with a production-ready real-time backend.
  */
 
-const DB_PREFIX = 'eduportal_';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+import { 
+    getFirestore, collection, addDoc, updateDoc, doc, onSnapshot, query, orderBy, getDocs 
+} from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+import firebaseConfig from "./firebase-config.js";
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db_fs = getFirestore(app);
 
 export const db = {
     /**
-     * Get all documents in a collection
-     */
-    getCollection: (name) => {
-        const data = localStorage.getItem(DB_PREFIX + name);
-        return data ? JSON.parse(data) : [];
-    },
-
-    /**
-     * Save/Overwrite the whole collection
-     */
-    saveCollection: (name, data) => {
-        localStorage.setItem(DB_PREFIX + name, JSON.stringify(data));
-        // Manual dispatch for same-tab updates
-        window.dispatchEvent(new Event('storage_manual'));
-    },
-
-    /**
      * Add a single document
      */
-    addDoc: (collectionName, doc) => {
-        const data = db.getCollection(collectionName);
-        const newDoc = { 
-            id: doc.id || Math.random().toString(36).substr(2, 9),
-            createdAt: new Date().toISOString(),
-            ...doc 
-        };
-        data.push(newDoc);
-        db.saveCollection(collectionName, data);
-        return newDoc;
-    },
-
-    /**
-     * Update a document by field (usually id)
-     */
-    updateDoc: (collectionName, id, updates) => {
-        const data = db.getCollection(collectionName);
-        const idx = data.findIndex(d => d.id === id || d.uid === id);
-        if (idx !== -1) {
-            data[idx] = { ...data[idx], ...updates, updatedAt: new Date().toISOString() };
-            db.saveCollection(collectionName, data);
-            return true;
+    addDoc: async (collectionName, data) => {
+        try {
+            const docRef = await addDoc(collection(db_fs, collectionName), {
+                ...data,
+                createdAt: new Date().toISOString()
+            });
+            return { id: docRef.id, ...data };
+        } catch (e) {
+            console.error("Error adding document: ", e);
+            throw e;
         }
-        return false;
     },
 
     /**
-     * Real-time listener simulation
+     * Update a document by ID
+     */
+    updateDoc: async (collectionName, id, updates) => {
+        try {
+            const docRef = doc(db_fs, collectionName, id);
+            await updateDoc(docRef, {
+                ...updates,
+                updatedAt: new Date().toISOString()
+            });
+            return true;
+        } catch (e) {
+            console.error("Error updating document: ", e);
+            return false;
+        }
+    },
+
+    /**
+     * Real-time listener
      */
     onSnapshot: (collectionName, callback) => {
-        // Initial fetch
-        callback(db.getCollection(collectionName));
+        const q = query(collection(db_fs, collectionName), orderBy("createdAt", "desc"));
+        
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const docs = [];
+            querySnapshot.forEach((doc) => {
+                docs.push({ id: doc.id, ...doc.data() });
+            });
+            callback(docs);
+        });
 
-        // Listener for cross-tab (standard 'storage' event)
-        const storageHandler = (e) => {
-            if (e.key === DB_PREFIX + collectionName || !e.key) {
-                callback(db.getCollection(collectionName));
-            }
-        };
-
-        // Listener for same-tab (custom manual event)
-        const manualHandler = () => {
-            callback(db.getCollection(collectionName));
-        };
-
-        window.addEventListener('storage', storageHandler);
-        window.addEventListener('storage_manual', manualHandler);
-
-        // Return unsubscribe function
-        return () => {
-            window.removeEventListener('storage', storageHandler);
-            window.removeEventListener('storage_manual', manualHandler);
-        };
+        return unsubscribe;
     }
 };
 

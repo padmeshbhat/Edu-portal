@@ -1,67 +1,45 @@
+/**
+ * EduPortal Data Seeder (Firebase Firestore)
+ * Populates Firestore with demo mentors and students if collections are empty.
+ */
+
 import { DEMO_MENTORS } from './demoMentors.js';
 import { DEMO_STUDENTS } from './demoStudents.js';
 
-function seedDemoStudents() {
-    let existingStudents = [];
+export async function seedDatabase() {
+    if (!window.eduDB) return;
+
+    // Check if seeding is needed by checking a marker in localStorage 
+    // (We use localStorage for the "seeded" flag to avoid API calls every reload)
+    if (localStorage.getItem('eduportal_seeded_fs') === 'true') return;
+
+    console.log('🌱 Seeding Firestore with demo data...');
+
     try {
-        const stored = localStorage.getItem('eduportal_students');
-        if (stored) {
-            existingStudents = JSON.parse(stored);
-        }
-    } catch (e) {
-        console.error("Error reading students from local storage", e);
-    }
-
-    let modified = false;
-
-    DEMO_STUDENTS.forEach(demoStudent => {
-        const exists = existingStudents.some(s => s.id === demoStudent.id || s.uid === demoStudent.id);
-        if (!exists) {
-            existingStudents.push({
-                ...demoStudent,
-                uid: demoStudent.id,
-                createdAt: new Date().toISOString()
+        // Seed Mentors
+        for (const mentor of DEMO_MENTORS) {
+            await window.eduDB.addDoc('mentors', {
+                ...mentor,
+                type: 'mentor',
+                isDemo: true
             });
-            modified = true;
         }
-    });
 
-    if (modified) {
-        localStorage.setItem('eduportal_students', JSON.stringify(existingStudents));
+        // Seed Students
+        for (const student of DEMO_STUDENTS) {
+            await window.eduDB.addDoc('students', {
+                ...student,
+                type: 'student',
+                isDemo: true
+            });
+        }
+
+        localStorage.setItem('eduportal_seeded_fs', 'true');
+        console.log('✅ Seeding complete.');
+    } catch (e) {
+        console.error('❌ Seeding failed:', e);
     }
 }
 
-function seedDemoMentors() {
-    let existingMentors = [];
-    try {
-        const stored = localStorage.getItem('eduportal_mentors');
-        if (stored) {
-            existingMentors = JSON.parse(stored);
-        }
-    } catch (e) {
-        console.error("Error reading mentors from local storage", e);
-    }
-
-    let modified = false;
-
-    DEMO_MENTORS.forEach(demoMentor => {
-        const exists = existingMentors.some(m => m.id === demoMentor.id || m.uid === demoMentor.id);
-        if (!exists) {
-            existingMentors.push({
-                ...demoMentor,
-                uid: demoMentor.id,
-                createdAt: new Date().toISOString()
-            });
-            modified = true;
-        }
-    });
-
-    if (modified) {
-        localStorage.setItem('eduportal_mentors', JSON.stringify(existingMentors));
-    }
-}
-
-// Ensure eduDB exists before seeding if possible, or just seed directly to localStorage
-// Since this is a module, we can wait a tick or just rely on localStorage which db.js also uses.
-seedDemoMentors();
-seedDemoStudents();
+// Start seeding process
+seedDatabase();
